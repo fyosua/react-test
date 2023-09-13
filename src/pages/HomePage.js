@@ -3,7 +3,7 @@ import useFetch from '../hooks/useFetch'
 import { Link } from 'react-router-dom'
 
 export default function HomePage() {
-  const { loading, error, data } = useFetch('http://localhost:1337/api/reviews')
+  const { loading, error, data } = useFetch(process.env.REACT_APP_API_URL+'reviews')
 
   if(loading) return <p>Loading...</p>
   if(error) return <p>Error</p>
