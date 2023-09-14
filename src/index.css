@@ -3,7 +3,7 @@
 body {
   margin: 0 30px;
   font-family: "Poppins";
-  background: #f1f1f1;
+  background: lightgray;
 }
 h1,h2,h3,h4 {
   font-weight: 500;
@@ -18,12 +18,14 @@ h1,h2,h3,h4 {
 }
 a {
   text-decoration: none;
-  color: #8e2ad6;
+  color: rgb(24, 24, 38);
   border-bottom: 1px dotted;
 }
 .site-header h1 {
   font-size: 1.5em;
-  color: #8e2ad6;
+  color: rgb(24, 24, 38);
+  text-align: center;
+  padding: 20px;
   padding-bottom: 10px;
   border-bottom: 2px solid;
 }
@@ -45,7 +47,7 @@ a {
   position: absolute;
   top: -20px;
   left: -20px;
-  background: #8e2ad6;
+  background: rgb(24, 24, 38);
   font-size: 3em;
   width: 90px;
   height: 90px;
@@ -54,6 +56,8 @@ a {
 }
 .review-card h2 {
   margin-bottom: 0;
+  font-size: 36px;
+  font-weight: bold;
 }
 .review-card small {
   margin-right: 10px;

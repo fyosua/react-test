@@ -23,7 +23,7 @@ export default function SiteHeader() {
 
   return (
     <div className="site-header">
-      <Link to="/"><h1>Ninja Reviews</h1></Link>
+      <Link to="/"><h1>Reviews</h1></Link>
       <nav className="categories">
         <span>Filter reviews by category:</span>
         {data.categories.data.map(category => (
