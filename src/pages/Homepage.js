@@ -1,28 +1,20 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
-import { useParams, Link } from 'react-router-dom'
 
-const CATEGORY= gql`
-  query GetCategory($id: ID!) {
-    category(id: $id){
+const REVIEWS = gql`
+  query GetReviews {
+    reviews {
       data{
         id,
         attributes{
-          name,
-          reviews{
-            data{
-              id,
-              attributes{
-                title,
-                body,
-                rating
-              }
-            }
-          }
+          title,
+          body,
+          rating,
         }
-      }    
-  	},
-  	categories{
+      }
+    },
+    categories {
       data{
         id,
         attributes{
@@ -33,11 +25,8 @@ const CATEGORY= gql`
   }
 `
 
-export default function Category() {
-  const { id } = useParams()
-  const { loading, error, data } = useQuery(CATEGORY, {
-    variables: { id: id }
-  })
+export default function Homepage() {
+  const { loading, error, data } = useQuery(REVIEWS)
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
@@ -46,16 +35,15 @@ export default function Category() {
 
   return (
     <div>
-      <h2>{ data.category.data.attributes.name } Games</h2>
-      {data.category.data.attributes.reviews.data.map(review => (
+      {data.reviews.data.map(review => (
         <div key={review.id} className="review-card">
           <div className="rating">{review.attributes.rating}</div>
           <h2>{review.attributes.title}</h2>
-
+          
           {data.categories.data.map(c => (
             <small key={c.id}>{c.attributes.name}</small>
           ))}
-          
+
           <p>{review.attributes.body.substring(0, 200)}...</p>
           <Link to={`/details/${review.id}`}>Read more</Link>
         </div>
