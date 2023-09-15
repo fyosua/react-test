@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
 
+import Paginate from '../Paginate';
+
 const REVIEWS = gql`
-  query GetReviews {
-    reviews {
+  query GetReviews($page: Int!, $size: Int!) {
+    reviews(pagination: { page: $page, pageSize: $size }) {
       data{
         id,
         attributes{
@@ -20,13 +22,47 @@ const REVIEWS = gql`
             }
           }
         }
+      },
+      meta {
+        pagination {
+          page
+          pageSize
+          total
+          pageCount
+        }
       }
     }
   }
 `
 
 export default function Homepage() {
-  const { loading, error, data } = useQuery(REVIEWS)
+  //paging
+  const postsPerPage = 2
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const paginate = (pageNumber) => {
+		setCurrentPage(pageNumber);
+	};
+
+	const previousPage = () => {
+		if (currentPage !== 1) {
+			setCurrentPage(currentPage - 1);
+		}
+	};
+
+	const nextPage = () => {
+		if (currentPage !== Math.ceil(data.reviews.meta.pagination.total / postsPerPage)) {
+			setCurrentPage(currentPage + 1);
+		}
+	};
+
+  //Appollo
+  const { loading, error, data } = useQuery(REVIEWS, {
+    variables: { 
+      page: parseInt(currentPage) ? parseInt(currentPage) : 1,
+      size: parseInt(postsPerPage)
+     }
+  })
 
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error :(</p>
@@ -48,6 +84,14 @@ export default function Homepage() {
           <Link to={`/details/${review.id}`}>Read more</Link>
         </div>
       ))}
+      <Paginate
+        postsPerPage={postsPerPage}
+        totalPosts={data.reviews.meta.pagination.total}
+        currentPage={data.reviews.meta.pagination.page}
+        paginate={paginate}
+        previousPage={previousPage}
+        nextPage={nextPage}
+			/>
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Outlet } from 'react-router-dom'
 import { useQuery, gql } from '@apollo/client'
 
 const CATEGORIES = gql`
@@ -22,7 +22,8 @@ export default function SiteHeader() {
   if (error) return <p>Error fetching categories</p>
 
   return (
-    <div className="site-header">
+    <>
+      <div className="site-header">
       <Link to="/"><h1>Reviews</h1></Link>
       <nav className="categories">
         <span>Filter reviews by category:</span>
@@ -32,6 +33,8 @@ export default function SiteHeader() {
           </Link>
         ))}
       </nav>
-    </div>
+      </div>
+      <Outlet/>
+    </>
   )
 }

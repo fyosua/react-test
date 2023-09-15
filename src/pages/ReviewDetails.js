@@ -26,9 +26,12 @@ const REVIEW = gql`
 `
 
 export default function ReviewDetails() {
-  const { id } = useParams()
+  const { id, page } = useParams()
   const { loading, error, data } = useQuery(REVIEW, {
-    variables: { id: id }
+    variables: { 
+      id: id,
+      page: parseInt(page) ? parseInt(page) : 1
+     }
   })
 
   if (loading) return <p>Loading...</p>

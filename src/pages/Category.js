@@ -34,9 +34,12 @@ const CATEGORY= gql`
 `
 
 export default function Category() {
-  const { id } = useParams()
+  const { id, page } = useParams()
   const { loading, error, data } = useQuery(CATEGORY, {
-    variables: { id: id }
+    variables: { 
+      id: id,
+      page: parseInt(page) ? parseInt(page) : 1
+     }
   })
 
   if (loading) return <p>Loading...</p>

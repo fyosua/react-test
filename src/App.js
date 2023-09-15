@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import React from 'react';
+import { Route, Routes } from 'react-router-dom'
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client"
 
 // page & layout imports
@@ -9,30 +10,28 @@ import SiteHeader from "./components/SiteHeader"
 
 // apollo client
 const client = new ApolloClient({
-  uri: 'https://strapi-backend-t5nf.onrender.com/graphql',
+  uri: process.env.REACT_APP_DB_URL,
   cache: new InMemoryCache()
 })
 
+
 function App() {
   return (
-    <Router>
-      <ApolloProvider client={client}>
-        <div className="App">
-          <SiteHeader />
-          <Switch>
-            <Route exact path="/">
-              <Homepage />
+    <ApolloProvider client={client}>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<SiteHeader />} >
+            <Route index element={<Homepage />}/>
+            <Route path="details">
+              <Route path=':id' element={<ReviewDetails />} />
             </Route>
-            <Route path="/details/:id">
-              <ReviewDetails />
+            <Route path="category">
+              <Route path=':id' element={<Category />} />
             </Route>
-            <Route path="/category/:id">
-              <Category />
-            </Route>
-          </Switch>
-        </div>
-      </ApolloProvider>
-    </Router>
+          </Route>
+        </Routes>
+      </div>
+    </ApolloProvider>
   );
 }
 
